@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: usuarios
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${POSTGRES_DB:postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  port: ${USUARIOS_PORT:8080}
+#  ssl:
+#    key-store: classpath:sec-cert.p12
+#    key-store-password: ${CERT_PASSWORD:password}
+#    key-store-type: PKCS12
+#    key-alias: SEC-CERT
+#  servlet:
+#    context-parameters:
+#      secure: true
+jwt:
+  secret: ${JWT_SECRET:secret}
+#logging:
+#  level:
+#    com:
+#      zaxxer:
+#        hikari: DEBUG
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
+
+eureka:
+  client:
+    registerWithEureka: true
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
+    hostname: usuarios-microservice
