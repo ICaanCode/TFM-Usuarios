@@ -25,6 +25,7 @@ public class Credencial {
   @OneToOne
   @JsonIgnore
   @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario", nullable = false)
+  @ToString.Exclude
   private Usuario usuario;
 
   @Column(name = "username", nullable = false, unique = true, length = 50)

@@ -1,9 +1,15 @@
-package com.unir.usuarios.api.dto.usuario;
+package com.unir.usuarios.api.dto.usuario.modificar;
 
+import com.unir.usuarios.api.dto.usuario.EstadoServicio;
+import com.unir.usuarios.domain.validation.ServiciosPorRolValidos;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
+@ServiciosPorRolValidos
 public class ModificarUsuarioRequest {
 
   private String nombres;
@@ -24,5 +30,8 @@ public class ModificarUsuarioRequest {
   private Integer codigoRol;
 
   private String username;
+
+  @Valid
+  private List<EstadoServicio> servicios;
 
 }

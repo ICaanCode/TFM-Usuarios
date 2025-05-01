@@ -1,11 +1,13 @@
 package com.unir.usuarios.application.usecases;
 
-import com.unir.usuarios.api.dto.usuario.CrearUsuarioRequest;
-import com.unir.usuarios.api.dto.usuario.ModificarPassword;
-import com.unir.usuarios.api.dto.usuario.ModificarUsuarioRequest;
+import com.unir.usuarios.api.dto.usuario.crear.CrearUsuarioRequest;
+import com.unir.usuarios.api.dto.usuario.modificar.ModificarPassword;
+import com.unir.usuarios.api.dto.usuario.modificar.ModificarUsuarioRequest;
 import com.unir.usuarios.api.dto.usuario.UsuarioDTO;
+import com.unir.usuarios.application.dto.ServicioUsuarioDTO;
 import com.unir.usuarios.domain.model.Credencial;
 import com.unir.usuarios.domain.model.Rol;
+import com.unir.usuarios.domain.model.ServicioUsuario;
 import com.unir.usuarios.domain.model.Usuario;
 import com.unir.usuarios.infraestructure.persistence.CredencialRepositoryImpl;
 import com.unir.usuarios.infraestructure.persistence.RolRepositoryImpl;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UsuarioUseCase {
+
+  private final ServicioUseCase servicioUseCase;
 
   private final CredencialRepositoryImpl credencialRepository;
   private final RolRepositoryImpl rolRepository;
@@ -62,6 +66,11 @@ public class UsuarioUseCase {
 
     nuevoUsuario.setCredencial(nuevaCredencial);
 
+    if (usuario.getCodigoRol().equals(10001)) {
+      List<ServicioUsuario> servicios = servicioUseCase.actualizarServiciosUsuario(usuario.getServicios(), nuevoUsuario);
+      nuevoUsuario.setServicios(servicios);
+    }
+
     return usuarioRepository.crearUsuario(nuevoUsuario);
 
   }
@@ -74,6 +83,9 @@ public class UsuarioUseCase {
     if (modificaciones.getCodigoRol() != null) {
       Rol rol = rolRepository.obtenerRolPorCodigo(modificaciones.getCodigoRol());
       usuario.setRol(rol);
+      if (!usuario.getRol().equals(10001)) {
+        usuario.setServicios(servicioUseCase.desactivarServiciosUsuario(usuario));
+      }
     }
 
     if (modificaciones.getNombres() != null) {
@@ -97,6 +109,11 @@ public class UsuarioUseCase {
     if (modificaciones.getUsername() != null) {
       verificarUsername(modificaciones.getUsername());
       usuario.getCredencial().setUsername(modificaciones.getUsername());
+    }
+
+    if (modificaciones.getServicios() != null && !modificaciones.getServicios().isEmpty()) {
+      List<ServicioUsuario> servicios = servicioUseCase.actualizarServiciosUsuario(modificaciones.getServicios(), usuario);
+      usuario.setServicios(servicios);
     }
 
     return usuarioRepository.guardarUsuario(usuario);
@@ -137,14 +154,8 @@ public class UsuarioUseCase {
   }
 
   private UsuarioDTO formatearUsuario(Usuario usuario) {
-    return new UsuarioDTO(
-        usuario.getNombres(),
-        usuario.getApellidos(),
-        usuario.getEmail(),
-        usuario.getIdentificacion(),
-        usuario.getRol().getCodigo(),
-        usuario.getCredencial().getUsername()
-    );
+    List<ServicioUsuarioDTO> listaServcios = servicioUseCase.listarServiciosPorUsuarioId(usuario.getIdUsuario());
+    return new UsuarioDTO(usuario, listaServcios);
   }
 
 }

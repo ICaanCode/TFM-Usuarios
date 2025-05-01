@@ -1,9 +1,15 @@
-package com.unir.usuarios.api.dto.usuario;
+package com.unir.usuarios.api.dto.usuario.crear;
 
+import com.unir.usuarios.api.dto.usuario.EstadoServicio;
+import com.unir.usuarios.domain.validation.ServiciosPorRolValidos;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
+@ServiciosPorRolValidos
 public class CrearUsuarioRequest {
 
   @NotBlank(message = "Debe proporcionar el nombre (o nombres) del usuario.")
@@ -33,5 +39,9 @@ public class CrearUsuarioRequest {
 
   @NotBlank(message = "Debe proporcionar una contraseña.")
   private String password;
+
+//  @NotEmpty(message = "La lista debe contener al menos el código de un servicio válido.")
+  @Valid
+  private List<EstadoServicio> servicios;
 
 }

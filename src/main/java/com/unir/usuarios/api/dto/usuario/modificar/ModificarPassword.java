@@ -1,4 +1,4 @@
-package com.unir.usuarios.api.dto.usuario;
+package com.unir.usuarios.api.dto.usuario.modificar;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

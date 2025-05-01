@@ -1,8 +1,8 @@
 package com.unir.usuarios.api.controller;
 
-import com.unir.usuarios.api.dto.usuario.CrearUsuarioRequest;
-import com.unir.usuarios.api.dto.usuario.ModificarPassword;
-import com.unir.usuarios.api.dto.usuario.ModificarUsuarioRequest;
+import com.unir.usuarios.api.dto.usuario.crear.CrearUsuarioRequest;
+import com.unir.usuarios.api.dto.usuario.modificar.ModificarPassword;
+import com.unir.usuarios.api.dto.usuario.modificar.ModificarUsuarioRequest;
 import com.unir.usuarios.api.dto.usuario.UsuarioDTO;
 import com.unir.usuarios.api.response.ApiResponse;
 import com.unir.usuarios.application.usecases.UsuarioUseCase;

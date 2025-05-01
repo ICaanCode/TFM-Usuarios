@@ -18,6 +18,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 1000
+            read-timeout: 1000
+            logger-level: full
+            retryer: feign.Retryer.Default
 server:
   port: ${USUARIOS_PORT:8080}
 #  ssl:

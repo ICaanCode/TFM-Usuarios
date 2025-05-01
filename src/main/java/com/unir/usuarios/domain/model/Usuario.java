@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -45,6 +47,10 @@ public class Usuario {
 
   @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Credencial credencial;
+
+  @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+  @Builder.Default
+  private List<ServicioUsuario> servicios = new ArrayList<>();
 
   @PrePersist
   public void onCreate() {
