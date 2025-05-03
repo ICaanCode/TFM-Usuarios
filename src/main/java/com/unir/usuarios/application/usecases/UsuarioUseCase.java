@@ -38,11 +38,8 @@ public class UsuarioUseCase {
 
   }
 
-  public UsuarioDTO obtenerUsuario(String parametro) {
-
-    Usuario usuario = usuarioRepository.obtenerUsuario(parametro);
-    return formatearUsuario(usuario);
-
+  public Usuario obtenerUsuario(String parametro) {
+    return usuarioRepository.obtenerUsuario(parametro);
   }
 
   @Transactional
@@ -153,7 +150,7 @@ public class UsuarioUseCase {
     return credencialRepository.existeUsername(nuevoUsername);
   }
 
-  private UsuarioDTO formatearUsuario(Usuario usuario) {
+  public UsuarioDTO formatearUsuario(Usuario usuario) {
     List<ServicioUsuarioDTO> listaServcios = servicioUseCase.listarServiciosPorUsuarioId(usuario.getIdUsuario());
     return new UsuarioDTO(usuario, listaServcios);
   }
